@@ -1,4 +1,5 @@
 # Inf_142_Team_
+# Marco Corrales Cardenas - Group 8
 Connecting server and clients services  by using socket programming in Python
 
 
