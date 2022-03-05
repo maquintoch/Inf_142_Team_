@@ -1,5 +1,5 @@
 # Inf_142_Team_
-# :+1: Marco Corrales Cardenas - Group 8 🛐
+# :+1: Marco Corrales Cardenas - Group 8 - Mandatory Assignment 5 🛐
 Connecting server and clients services  by using socket programming in Python
 
 
