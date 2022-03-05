@@ -2,8 +2,14 @@
 client script for stablishing a communication to a server
 '''
 from socket import socket
+from rich import print
+from rich.prompt import Prompt
+from rich.table import Table
 
-# Creating constans: Server Ip address and the port number used
+from champlistloader import load_some_champs
+from core import Champion, Match, Shape, Team
+
+# Creating constants: Server Ip address and the port number used
 SERVER_ADDR = ("localhost", 5550)
 
 

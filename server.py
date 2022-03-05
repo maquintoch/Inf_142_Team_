@@ -1,7 +1,7 @@
 '''
 Server script 
 '''
-
+import os
 from selectors import DefaultSelector, EVENT_READ
 from socket import socket, SOL_SOCKET, SO_REUSEADDR
 from rich import print
