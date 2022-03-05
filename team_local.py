@@ -25,7 +25,8 @@ def print_available_champs(champions: dict[Champion]) -> None:
         available_champs.add_row(*champion.str_tuple)
 
     # print(available_champs)
-    return available_champs
+
+    return str(available_champs)
 
 # This will be on server:
 

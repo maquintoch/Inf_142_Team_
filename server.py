@@ -1,6 +1,7 @@
 '''
 Server script 
 '''
+from encodings import utf_8
 import os
 from selectors import DefaultSelector, EVENT_READ
 from socket import socket, SOL_SOCKET, SO_REUSEADDR
@@ -9,6 +10,8 @@ from rich.prompt import Prompt
 from rich.table import Table
 from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
+from team_local import print_available_champs
+import json
 
 
 def accept(sock):
@@ -19,11 +22,16 @@ def accept(sock):
 
 
 def read(conn):
-    data = conn.recv(2048)  # Should be ready
+
+    data = conn.recv(2048*2)  # Should be ready
     if data:
         word = data.decode()
-        new_word = word.upper()
-        conn.send(new_word.encode())
+        #new_word = word.upper()
+
+        champions = load_some_champs()
+        ListOfChampions = print_available_champs(champions)
+        #ListOfChampions = json.dumps(ListOfChampions)
+        conn.send(ListOfChampions.encode())
     else:
         print('closing', conn)
         sel.unregister(conn)
