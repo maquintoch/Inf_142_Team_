@@ -1,8 +1,14 @@
 '''
 Server script 
 '''
+
 from selectors import DefaultSelector, EVENT_READ
 from socket import socket, SOL_SOCKET, SO_REUSEADDR
+from rich import print
+from rich.prompt import Prompt
+from rich.table import Table
+from champlistloader import load_some_champs
+from core import Champion, Match, Shape, Team
 
 
 def accept(sock):
