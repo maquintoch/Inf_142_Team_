@@ -4,6 +4,7 @@ from rich.table import Table
 
 from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
+import json
 
 # This will be on client side
 
@@ -26,8 +27,10 @@ def print_available_champs(champions: dict[Champion]) -> None:
 
     # print(available_champs)
 
-    return str(available_champs)
+    # return json.JSONEncoder().encode(available_champs)
+    #vailable_champs = json.dumps(available_champs)
 
+    print(available_champs)
 # This will be on server:
 
 

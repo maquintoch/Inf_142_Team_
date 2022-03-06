@@ -29,9 +29,12 @@ def read(conn):
         #new_word = word.upper()
 
         champions = load_some_champs()
-        ListOfChampions = print_available_champs(champions)
+        #ListOfChampions = print_available_champs(champions)
         #ListOfChampions = json.dumps(ListOfChampions)
-        conn.send(ListOfChampions.encode())
+        #ListOfChampions = json.dumps(ListOfChampions)
+        # conn.send(ListOfChampions.encode())
+        # conn.sendall(bytes(ListOfChampions.encode()))
+        conn.send("Holade vuelta".encode())
     else:
         print('closing', conn)
         sel.unregister(conn)
