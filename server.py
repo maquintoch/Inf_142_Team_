@@ -12,6 +12,7 @@ from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
 from team_local import print_available_champs
 import json
+from state import *
 
 
 def accept(sock):
@@ -22,19 +23,25 @@ def accept(sock):
 
 
 def read(conn):
-
     data = conn.recv(2048*2)  # Should be ready
     if data:
-        word = data.decode()
+        objects = data.decode().split(',')
+        cmd = objects[0]
+        value = [1]
         #new_word = word.upper()
 
-        champions = load_some_champs()
         #ListOfChampions = print_available_champs(champions)
         #ListOfChampions = json.dumps(ListOfChampions)
         #ListOfChampions = json.dumps(ListOfChampions)
         # conn.send(ListOfChampions.encode())
         # conn.sendall(bytes(ListOfChampions.encode()))
-        conn.send("Holade vuelta".encode())
+
+        if cmd == "add":
+            state.add_player(value)
+            conn.send(str('Velkommen %s' % (value)).encode())
+        elif cmd == "list":
+            conn.send(state.get_list_str())
+
     else:
         print('closing', conn)
         sel.unregister(conn)
@@ -57,3 +64,4 @@ while True:
             accept(key.fileobj)
         else:
             read(key.fileobj)
+state = state()

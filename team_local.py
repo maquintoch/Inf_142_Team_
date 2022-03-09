@@ -25,12 +25,13 @@ def print_available_champs(champions: dict[Champion]) -> None:
     for champion in champions.values():
         available_champs.add_row(*champion.str_tuple)
 
-    # print(available_champs)
+    print(available_champs)
 
     # return json.JSONEncoder().encode(available_champs)
     #vailable_champs = json.dumps(available_champs)
+    return available_champs
+    # print(available_champs)
 
-    print(available_champs)
 # This will be on server:
 
 

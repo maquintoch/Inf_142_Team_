@@ -1,58 +1,63 @@
 '''
 client script for stablishing a communication to a server
 '''
-from socket import socket
-from zoneinfo import available_timezones
-from rich import print
-from rich.prompt import Prompt
+# Comand
 from rich.table import Table
-from team_local import print_available_champs
-from champlistloader import load_some_champs
-from core import Champion, Match, Shape, Team
-from core import Champion, Match, Shape, Team
-import json
+from rich.prompt import Prompt
+from rich import print
+from player import *
+import socket
+# 1. List> list,None > String
+# 2. Add Player -> add,Marco ->
 
-# Creating constants: Server Ip address and the port number used
-SERVER_ADDR = ("localhost", 5550)
-
-
-sock = socket()
-sock.connect(SERVER_ADDR)
-word = "Hola"
-sock.send(word.encode())
-#new_word = sock.recv(2048).decode()
-ListOfChampions = sock.recv(2048*2).decode()
-champions = load_some_champs()
-ListOfChampions = print_available_champs(champions)
-ListOfChampions = json.dumps(ListOfChampions)
-#ListOfChampions = json.dumps(ListOfChampions)
-# conn.send(ListOfChampions.encode())
-# conn.sendall(bytes(ListOfChampions.encode()))
+players = None
 
 
-####
-ListOfChampions = json.loads(ListOfChampions)
-
-#ListOfChampions = json.JSONDecoder().decode(ListOfChampions)
-
-###
-# Converting a rich table to a data frame for printing
-
-#df = table_to_df(ListOfChampions)
-# print(df)
-###
-#ListOfChampions = dict(ListOfChampions)
-#ListOfChampions = json.loads(ListOfChampions)
-print(type(ListOfChampions))
-#ListOfChampions = dict(ListOfChampions)
-print(f"From Server : {ListOfChampions}")
-#print(f"From Server: {df}")
-sock.close()
+def get_current_cmd():
+    if players == None:
+        return "list"
+    return "add"
 
 
-""" def table_to_df(rich_table: Table) -> pd.DataFrame:
-    available_timezones.data = {
-        x.header: [Text.from_markup(y).plain for y in x.cells] for x in available_timezones.columns
-    }
-    return pd.DataFrame(available_timezones)
-"""
+def print_players(pString):
+    # Create a table containing available champions
+    available_champs = Table(title='Available champions')
+    # Add the columns Name, probability of rock, probability of paper and
+    # probability of scissors
+    available_champs.add_column("Name", style="cyan", no_wrap=True)
+    available_champs.add_column("prob(:raised_fist-emoji:)", justify="center")
+    available_champs.add_column("prob(:raised_hand-emoji:)", justify="center")
+    available_champs.add_column("prob(:victory_hand-emoji:)", justify="center")
+
+    players = players.from_string(pString)
+
+    # Populate the table
+    for player in players:
+        tuple_object = (player.name, player.rock,
+                        player.paper, player.scissors)
+        available_champs.add_row(*tuple_object)
+    players = available_champs
+    print(available_champs)
+
+
+def chat():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        host = "localhost"
+        port = 8001
+
+        s.connect((host, port))
+        if players != None:
+            name = input('Input Name: ')
+            cmd = "add," + name
+            s.sendall(b'' + str.encode(cmd))
+
+        else:
+            cmd = "list,None"
+            s.sendall(b'' + str.encode(cmd))
+
+            print_players(str(s.recv(4096), 'utf-8'))
+
+    chat()
+
+
+chat()
