@@ -2,11 +2,7 @@ from rich import print
 from rich.prompt import Prompt
 from rich.table import Table
 
-from champlistloader import load_some_champs
 from core import Champion, Match, Shape, Team
-import json
-
-# This will be on client side
 
 
 def print_available_champs(champions: dict[Champion]) -> None:
@@ -26,36 +22,6 @@ def print_available_champs(champions: dict[Champion]) -> None:
         available_champs.add_row(*champion.str_tuple)
 
     print(available_champs)
-
-    # return json.JSONEncoder().encode(available_champs)
-    #vailable_champs = json.dumps(available_champs)
-    # return available_champs
-    # print(available_champs)
-
-# This will be on server:
-
-
-def input_champion(prompt: str,
-                   color: str,
-                   champions: dict[Champion],
-                   player1: list[str],
-                   player2: list[str]) -> None:
-
-    # Prompt the player to choose a champion and provide the reason why
-    # certain champion cannot be selected
-    while True:
-        match Prompt.ask(f'[{color}]{prompt}'):
-            case name if name not in champions:
-                print(f'The champion {name} is not available. Try again.')
-            case name if name in player1:
-                print(f'{name} is already in your team. Try again.')
-            case name if name in player2:
-                print(f'{name} is in the enemy team. Try again.')
-            case _:
-                player1.append(name)
-                break
-
-# This will be on client side
 
 
 def print_match_summary(match: Match) -> None:
@@ -96,46 +62,8 @@ def print_match_summary(match: Match) -> None:
     # Print the winner
     if red_score > blue_score:
         print('\n[red]Red victory! :grin:')
-        return "Red victory"
     elif red_score < blue_score:
         print('\n[blue]Blue victory! :grin:')
-        return "Blue victory"
     else:
         print('\nDraw :expressionless:')
-        return "Draw"
     ###
-
-
-def main() -> None:
-
-    print(
-        '\n''Welcome to [bold yellow]Team Local Tactics[/bold yellow]!''\n''Each player choose a champion each time.''\n')
-
-    champions = load_some_champs()
-    print_available_champs(champions)
-    print('\n')
-
-    player1 = []
-    player2 = []
-
-    # Champion selection #### This following will be on server as well
-    for _ in range(2):
-        input_champion('Player 1', 'red', champions, player1, player2)
-        input_champion('Player 2', 'blue', champions, player2, player1)
-
-    print('\n')
-    ####
-    # Match
-    match = Match(
-        Team([champions[name] for name in player1]),
-        Team([champions[name] for name in player2])
-    )
-    match.play()
-
-    # Print a summary # Instead of printing the match, we can send it
-    # to the client so it can read it from there?
-    print_match_summary(match)
-
-
-if __name__ == '__main__':
-    main()
