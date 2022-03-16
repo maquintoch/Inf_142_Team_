@@ -21,3 +21,5 @@ The following steps must be applied for executing the program:
 
 4 Finally, execute the client.py file in two different terminals.
 
+5 After finishing the game, the code will create a match_data.py file in which will be placed / saved the winner team. This occurs when database and server are listening and closing connections from clients, when they have finished the game. I could not implement the stats, but I think I could manage to save some information on the database as I indicated lines above. 
+
